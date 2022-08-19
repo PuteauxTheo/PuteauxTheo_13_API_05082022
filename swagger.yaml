@@ -70,6 +70,7 @@ paths:
           name: Authorization
           description: Attach Bearer JWT token
           required: true
+          type: string
       produces:
         - application/json
       responses:
@@ -93,6 +94,7 @@ paths:
           name: Authorization
           description: Attach Bearer JWT token
           required: true
+          type: string
         - in: body
           name: body
           description: Update user profile attributes
@@ -106,6 +108,112 @@ paths:
           description: User profile retrieved successully
           schema:
             $ref: '#/definitions/ApiResponse'
+        '400':
+          description: Invalid Fields
+        '500':
+          description: Internal Server Error
+  /user/transaction/{monthTransactionsID}:
+    get:
+      security:
+        - Bearer: []
+      tags:
+        - Transaction Module
+      summary: All User Month Transaction
+      description: API for fetching all user transactions by month;
+      parameters:
+      - in: header
+        name: Authorization
+        description: Attach Bearer JWT token
+        required: true
+        type: string
+      - name: monthTransactionsID
+        in: path
+        required: true
+        description: All user transactions in month
+        type: integer
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: All transactions retrieved successully
+          schema:
+            $ref: '#/definitions/Transactions'
+        '400':
+          description: Bad request
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not found
+        '500':
+          description: Internal server error
+  /user/transaction/{monthTransactionsID}/{transactionID}:
+    parameters:
+      - in: header
+        name: Authorization
+        description: Attach Bearer JWT token
+        required: true
+        type: string
+      - name: monthTransactionsID
+        in: path
+        required: true
+        description: All user transactions in month
+        type: integer
+      - name: transactionID
+        in: path
+        required: true
+        description: User's transaction ID
+        type: integer
+      
+    get:
+      security:
+        - Bearer: []
+      tags:
+        - Transaction Module
+      summary: User Details Transaction
+      description: API for fetching a user transaction by id
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: User transaction retrieved successully
+          schema:
+            $ref: '#/definitions/Transaction'
+        '400':
+          description: Invalid Fields
+        '500':
+          description: Internal Server Error
+    put:
+      security:
+        - Bearer: []
+      tags:
+        - Transaction Module
+      summary: User Transaction Update
+      description: API for updating user balance
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: User balance updating retrieved successully
+          schema:
+            $ref: '#/definitions/UpdateTransaction'
+        '400':
+          description: Bad request
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not found
+        '500':
+          description: Internal server error
+    delete:
+      tags:
+        - Transaction Module
+      summary: Delete transaction by Id
+      description: Delete information transaction
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: User delete successully
         '400':
           description: Invalid Fields
         '500':
@@ -164,3 +272,36 @@ definitions:
         type: string
       lastName:
         type: string
+  Transactions:
+    type: object
+    properties:
+      monthTransactionsID:
+        type: number
+        description: transaction ID who select all transaction in month
+  Transaction:
+    type: object
+    properties:
+      transactionID:
+        type: number
+        description: transaction ID 
+      transactionDate:
+        type: string
+        description: transaction Date
+      transactionDescription:
+        type: string
+        description: transaction Description
+      transactionAmount:
+        type: string
+        description: transaction Amount
+      transactionBalance:
+        type: number
+        description: transaction Balance
+  UpdateTransaction:
+    type: object
+    properties:
+      transactionBalance:
+        type: number
+        description: update transaction balance
+
+
+
