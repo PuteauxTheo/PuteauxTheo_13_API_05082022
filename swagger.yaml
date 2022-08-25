@@ -204,6 +204,27 @@ paths:
           description: Not found
         '500':
           description: Internal server error
+    post:   
+      tags:
+      - Transaction Module
+      summary: Create user's transaction
+      security:
+        - Bearer: []
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: user's transaction retrieved successfully
+          schema:
+            $ref: '#/definitions/Transaction'
+        '400':
+          description: Bad request
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not found
+        '500':
+          description: Internal server error
     delete:
       tags:
         - Transaction Module
